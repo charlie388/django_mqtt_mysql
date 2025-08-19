@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static "css/style.css" %}" type="text/css">
+    <title>MQTT Test</title>
+</head>
+<body>
+    <h1>MQTT Publish</h1>
+    <form id="myForm">
+    <label for="topic">topic:</label><br/>
+    <input type="text" name="topic" id="topic" value="01/cmd"/><br/>
+    <label for="msg">msg:</label><br/>
+    <textarea name="msg" id="msg">flash</textarea><br/>
+    <input type="submit"/>
+    <input type="reset"/><br/>
+    </form>
+    <hr/>
+    <h1>MQTT Subscribe (+/upload)</h1>
+    <table id="myTable">
+        <thead>
+            <tr>
+                <th>id</th> <th>device</th> <th>upload</th> <th>eventTime</th>
+            </tr>
+        </thead>
+        <tbody>
+			<!-- Add something here -->
+        </tbody>
+    </table>
+<script src="{% static "myjs.js" %}"></script>
+</body>
+</html>
