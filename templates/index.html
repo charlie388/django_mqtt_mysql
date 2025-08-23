@@ -22,13 +22,37 @@
     <table id="myTable">
         <thead>
             <tr>
-                <th>id</th> <th>device</th> <th>upload</th> <th>eventTime</th>
+                <th>id</th><th>device</th><th>upload</th><th>eventTime</th>
             </tr>
         </thead>
         <tbody>
-			<!-- Add something here -->
+			<!-- always show 13 rows -->
+             <tr><td>&nbsp</td><td></td><td></td><td></td></tr>
+             <tr><td>&nbsp</td><td></td><td></td><td></td></tr>
+             <tr><td>&nbsp</td><td></td><td></td><td></td></tr>
+             <tr><td>&nbsp</td><td></td><td></td><td></td></tr>
+             <tr><td>&nbsp</td><td></td><td></td><td></td></tr>
+             <tr><td>&nbsp</td><td></td><td></td><td></td></tr>
+             <tr><td>&nbsp</td><td></td><td></td><td></td></tr>
+             <tr><td>&nbsp</td><td></td><td></td><td></td></tr>
+             <tr><td>&nbsp</td><td></td><td></td><td></td></tr>
+             <tr><td>&nbsp</td><td></td><td></td><td></td></tr>
+             <tr><td>&nbsp</td><td></td><td></td><td></td></tr>
+             <tr><td>&nbsp</td><td></td><td></td><td></td></tr>
+             <tr><td>&nbsp</td><td></td><td></td><td></td></tr>
         </tbody>
     </table>
+    <hr/>
+    <h3>MQTT publish topic: 01/upload, msg: {"temp": 50.1}</h3>
+    <h3>只要temp > 50.0就會發Line訊息通知</h3>
+    <h3>若需實驗，請加入個人Line官方帳號</h3>
+    <div>
+        <a href="https://lin.ee/SOpGwyO"><img src="https://scdn.line-apps.com/n/line_add_friends/btn/zh-Hant.png" alt="加入好友" height="36" border="0"></a>
+    </div>
+    
+    <div>
+        <img src="https://qr-official.line.me/gs/M_693zsvil_BW.png?oat_content=qr">
+    </div>
 <script src="{% static "myjs.js" %}"></script>
 </body>
 </html>

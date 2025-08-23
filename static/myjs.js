@@ -27,59 +27,68 @@ document.getElementById("myForm").addEventListener("submit", async (e) => {
     }
 });
 
-    	let idMark = null;
-    	setInterval(add, 5000);
-        function add() {
-        	if(idMark == null) { // fresh get
-        		getUpload('/api/upload/');	
-        	} else {
-        		getUpload('/api/upload/'+idMark);	
-        	}
-        	
+let idMark = null;
+setInterval(add, 5000);
+  function add() {
+    if(idMark == null) { // fresh get
+      getUpload('/api/upload/');	
+    } else {
+      getUpload('/api/upload/'+idMark);	
+    }
+    
+  }
+  
+  function getUpload(URL)
+  {
+    fetch(URL) // Replace with your API endpoint
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
         }
-        
-        function getUpload(URL)
-        {
-	        fetch(URL) // Replace with your API endpoint
-	      	  .then(response => {
-	      	    if (!response.ok) {
-	      	      throw new Error('Network response was not ok');
-	      	    }
-	      	    return response.json(); // Parse the JSON data
-	      	  })
-	      	  .then(data => {
-	      	    //console.log(data); // Handle the data here
-	      	    fillTable(data);
-	
-	      	  })
-	      	  .catch(error => {
-	      	    console.error('There was a problem with the fetch operation:', error);
-	      	});
-        }
-        
-        function fillTable(data) {
-    	    var table = document.getElementById("myTable").getElementsByTagName('tbody')[0];
-    	    for(let i=(data.length-1); i>=0; i--) {
-    	    	var newRow = table.insertRow(0);
+        return response.json(); // Parse the JSON data
+      })
+      .then(data => {
+        //console.log(data); // Handle the data here
+        fillTable(data);
 
-                var idCell = newRow.insertCell(0);
-                var deviceCell = newRow.insertCell(1);
-                var uploadCell = newRow.insertCell(2);
-                var eventTimeCell = newRow.insertCell(3);
-                
-                idCell.innerHTML = data[i].id;
-                deviceCell.innerHTML = data[i].device;
-                uploadCell.innerHTML = data[i].upload;
-                //eventTimeCell.innerHTML = new Date(data[i].created);
-                eventTimeCell.innerHTML = new Date(data[i].created).toLocaleString();
+      })
+      .catch(error => {
+        console.error('There was a problem with the fetch operation:', error);
+    });
+  }
+  
+  function fillTable(data) {
+    var table = document.getElementById("myTable").getElementsByTagName('tbody')[0];
+    for(let i=(data.length-1); i>=0; i--) {
+      var newRow = table.insertRow(0);
 
-                idMark = data[i].id;
-    	    }
-    	    
-            if(table.rows.length > 13) {
-                let i;
-                for(i=table.rows.length - 1 ; i>=13; i--) {
-                	table.deleteRow(i);
-                }
-            }
-        }
+          var idCell = newRow.insertCell(0);
+          var deviceCell = newRow.insertCell(1);
+          var uploadCell = newRow.insertCell(2);
+          var eventTimeCell = newRow.insertCell(3);
+          
+          idCell.innerHTML = data[i].id;
+          deviceCell.innerHTML = data[i].device;
+          uploadCell.innerHTML = data[i].upload;
+          //eventTimeCell.innerHTML = new Date(data[i].created);
+          eventTimeCell.innerHTML = new Date(data[i].created).toLocaleString();
+
+          idMark = data[i].id;
+    }
+    
+      if(table.rows.length > 13) {
+          let i;
+          for(i=table.rows.length - 1 ; i>=13; i--) {
+            table.deleteRow(i);
+          }
+      }
+  }
+
+const lineMobile = document.getElementById('line_mobile');
+const lineDesktop = document.getElementById('line_desktop');
+
+if (navigator.userAgentData.mobile) { // Check if the element exists
+    lineDesktop.style.display = 'none';
+} else {
+    lineMobile.style.display = 'none';
+}

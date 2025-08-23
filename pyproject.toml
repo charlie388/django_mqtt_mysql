@@ -8,4 +8,5 @@ dependencies = [
     "django>=5.2.5",
     "paho-mqtt>=2.1.0",
     "pymysql>=1.1.1",
+    "requests>=2.32.5",
 ]
