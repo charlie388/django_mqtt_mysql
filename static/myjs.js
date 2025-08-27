@@ -83,12 +83,3 @@ setInterval(add, 5000);
           }
       }
   }
-
-const lineMobile = document.getElementById('line_mobile');
-const lineDesktop = document.getElementById('line_desktop');
-
-if (navigator.userAgentData.mobile) { // Check if the element exists
-    lineDesktop.style.display = 'none';
-} else {
-    lineMobile.style.display = 'none';
-}
