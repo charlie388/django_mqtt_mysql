@@ -63,7 +63,7 @@ let toggleColor = 0;
     for(let i=(data.length-1); i>=0; i--) {
       var newRow = table.insertRow(0);
 
-      toggleColor = toggleColor % 7;
+      toggleColor = toggleColor % 6;
       if(toggleColor == 0) {
         newRow.classList.add("table-primary");
         toggleColor++;
@@ -81,9 +81,6 @@ let toggleColor = 0;
         toggleColor++;
       } else if(toggleColor == 5){
         newRow.classList.add("table-light");
-        toggleColor++;
-      } else if(toggleColor == 6){
-        newRow.classList.add("table-dark");
         toggleColor++;
       }
 
