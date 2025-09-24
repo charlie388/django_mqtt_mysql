@@ -57,23 +57,48 @@ setInterval(add, 5000);
     });
   }
   
+let toggleColor = 0;
   function fillTable(data) {
     var table = document.getElementById("myTable").getElementsByTagName('tbody')[0];
     for(let i=(data.length-1); i>=0; i--) {
       var newRow = table.insertRow(0);
 
-          var idCell = newRow.insertCell(0);
-          var deviceCell = newRow.insertCell(1);
-          var uploadCell = newRow.insertCell(2);
-          var eventTimeCell = newRow.insertCell(3);
-          
-          idCell.innerHTML = data[i].id;
-          deviceCell.innerHTML = data[i].device;
-          uploadCell.innerHTML = data[i].upload;
-          //eventTimeCell.innerHTML = new Date(data[i].created);
-          eventTimeCell.innerHTML = new Date(data[i].created).toLocaleString();
+      toggleColor = toggleColor % 7;
+      if(toggleColor == 0) {
+        newRow.classList.add("table-primary");
+        toggleColor++;
+      } else if(toggleColor == 1){
+        newRow.classList.add("table-success");
+        toggleColor++;
+      } else if(toggleColor == 2){
+        newRow.classList.add("table-danger");
+        toggleColor++;
+      } else if(toggleColor == 3){
+        newRow.classList.add("table-warning");
+        toggleColor++;
+      } else if(toggleColor == 4){
+        newRow.classList.add("table-info");
+        toggleColor++;
+      } else if(toggleColor == 5){
+        newRow.classList.add("table-light");
+        toggleColor++;
+      } else if(toggleColor == 6){
+        newRow.classList.add("table-dark");
+        toggleColor++;
+      }
 
-          idMark = data[i].id;
+      var idCell = newRow.insertCell(0);
+      var deviceCell = newRow.insertCell(1);
+      var uploadCell = newRow.insertCell(2);
+      var eventTimeCell = newRow.insertCell(3);
+      
+      idCell.innerHTML = data[i].id;
+      deviceCell.innerHTML = data[i].device;
+      uploadCell.innerHTML = data[i].upload;
+      //eventTimeCell.innerHTML = new Date(data[i].created);
+      eventTimeCell.innerHTML = new Date(data[i].created).toLocaleString();
+
+      idMark = data[i].id;
     }
     
       if(table.rows.length > 13) {

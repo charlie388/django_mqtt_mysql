@@ -1,8 +1,41 @@
-body {color: white; background: black;}
-table, th, td {
-    font-size: 16px;
-    line-height: 1.5;
-    text-align: center;
-    border: 1px solid white;
-    border-collapse: collapse;
+
+body {
+  background: #f7f9fb;
+}
+
+
+.card {
+  border-radius: 0.90rem;
+}
+
+
+#myTable td, #myTable th {
+  vertical-align: middle;
+  white-space: nowrap;
+}
+#myTable td:nth-child(3) {
+
+  white-space: normal;
+  word-break: break-word;
+}
+
+
+code {
+  word-break: break-all;
+}
+
+
+#myForm textarea {
+  resize: vertical;
+}
+
+
+.navbar-brand {
+  letter-spacing: 0.2px;
+}
+
+
+img {
+  max-width: 100%;
+  height: auto;
 }
