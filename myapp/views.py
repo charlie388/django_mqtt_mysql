@@ -21,7 +21,8 @@ def index(request):
             return render(request, 'index.html', locals())
     else:
         return redirect("/login/")
-
+    
+@csrf_exempt  # Only for development/testing; use CSRF tokens in production
 def login(request):
     if request.method=='POST':
         name = request.POST['username']
@@ -144,6 +145,7 @@ def sessions_list(request):
     else:
         return redirect("/login/")
 
+@csrf_exempt  # Only for development/testing; use CSRF tokens in production
 def sessions_logout(request):
     if request.user.is_authenticated and request.user.is_superuser:
         if request.method != "POST":
