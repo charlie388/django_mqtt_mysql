@@ -135,9 +135,7 @@ def sessions_list(request):
             rows.append({
                 "session_key": s.session_key,
                 "expire_date": s.expire_date,
-                "last_seen": data.get("last_seen"),   # 需你有 middleware 寫入
                 "ua": data.get("ua"),                 # 需你在登入時寫入
-                "ip": data.get("ip"),                 # 需你在登入時寫入
                 "username": usernames.get(data.get("_auth_user_id")),
             })
 

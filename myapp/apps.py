@@ -16,6 +16,4 @@ from django.dispatch import receiver
 def stamp_session_device(sender, user, request, **kwargs):
     s = request.session
     s['ua'] = request.META.get('HTTP_USER_AGENT', '')[:255]
-    s['ip'] = request.META.get('REMOTE_ADDR')
-    s['last_seen'] = None  # 也可在 middleware 內持續更新
     s.save()
