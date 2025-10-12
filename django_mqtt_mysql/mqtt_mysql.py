@@ -41,12 +41,11 @@ def on_message(mqtt_client, userdata, msg):
     unit = Upload.objects.create(device=device, upload=upload)
     unit.save()
 
-    global normalTempDuraCnt
     upload_obj = json.loads(upload)
     if 'temp' in upload_obj:
         global temp 
         temp = upload_obj['temp']
-        if(temp > 50.0 and msg.topic == '01/upload' and normalTempDuraCnt == 0) :
+        if(temp > 50.0 and msg.topic == '0/upload') :
             msg = f'溫度超標 {temp}'
             print(msg)
             data['messages'][0]['text'] = msg
@@ -55,10 +54,6 @@ def on_message(mqtt_client, userdata, msg):
 	            print(f"Request fulfilled with response: {res.text}")
             else:
 	            print(f"Request failed with response: {res.status_code}-{res.text}")
-            normalTempDuraCnt = 10;
-
-        if(temp < 32.0 and normalTempDuraCnt >= 1):
-            normalTempDuraCnt -= 1
 
 print("mqtt_mysql.py run")
 my_client_id = "web_" + "".join([random.choice("0123456789abcdef") for i in range(8)])

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="icon" type="image/png" href="{% static "images/favicon-96x96.png" %}" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="{% static "images/favicon.svg" %}"  />
+    <link rel="shortcut icon" href="{% static "images/favicon.ico" %}" />
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static "images/apple-touch-icon.png" %}" />
+    <meta name="apple-mobile-web-app-title" content="MyWebSite" />
+    <link rel="manifest" href="{% static "images/site.webmanifest" %}" />
+
+    <title>登入</title>
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden; /* 移除捲動條 */
+            background-color: #f3f4f6;
+            font-family: "Noto Sans TC", sans-serif;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        form {
+            background-color: #fff;
+            padding: 40px 50px;
+            border-radius: 16px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+            width: 320px;  /* 控制整體寬度 */
+            text-align: center;
+        }
+
+        .form-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 25px;
+            letter-spacing: 1px;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;         /* 讓 label 在上方 */
+            margin-bottom: 6px;
+            font-weight: 600;
+            color: #444;
+        }
+
+        .form-group input[type="text"],
+        .form-group input[type="password"] {
+            width: 100%;            /* ✅ 與按鈕同寬 */
+            padding: 10px 12px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            box-sizing: border-box; /* 確保 padding 不影響寬度 */
+            font-size: 15px;
+        }
+
+        input[type="submit"] {
+            width: 100%;            /* ✅ 與輸入框同寬 */
+            padding: 12px 0;
+            background-color: #4a90e2;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: background-color 0.2s ease;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #357abd;
+        }
+
+        span {
+            display: block;
+            color: red;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <form action="." method="POST" name="form1">
+        {% csrf_token %}
+        <div class="form-title">使用者登入</div>
+
+        <div class="form-group"> 
+            <label for="username">帳號：</label>
+            <input type="text" name="username" id="username"/>
+        </div>
+
+        <div class="form-group">
+            <label for="password">密碼：</label>
+            <input type="password" name="password" id="password"/>
+        </div>
+
+        <input type="submit" name="button" id="button" value="登入"/>
+        <span>{{ message }}</span>
+    </form>
+</body>
+</html>

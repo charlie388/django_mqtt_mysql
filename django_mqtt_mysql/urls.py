@@ -21,7 +21,11 @@ from myapp import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("", views.index),
-    path("api/upload/", views.upload),
-    path("api/upload/<int:id>", views.uploadVar),
-    path('api/publish/', views.publish_message, name='publish'),
+    path('login/', views.login),
+    path('logout/', views.logout),
+    path("api/upload/", views.upload_list),
+    path("api/upload/<int:id>", views.upload_update),
+    path('api/publish/', views.publish_message),
+    path("sessions/", views.sessions_list),
+    path("sessions/logout/",views.sessions_logout),
 ]

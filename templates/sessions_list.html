@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Sessions（測試用）</title>
+  <meta name="robots" content="noindex, nofollow">
+  <style>
+    table { width:100%; border-collapse: collapse; }
+    th, td { border:1px solid #ddd; padding:8px; vertical-align: top; }
+    th { background:#f7f7f7; text-align:left; }
+    code { background:#f0f0f0; padding:2px 4px; border-radius:4px; }
+    .badge { padding:2px 6px; border-radius:4px; background:#eee; }
+  </style>
+</head>
+<body>
+  <h1>Sessions（測試用）</h1>
+  <table>
+    <thead>
+      <tr>
+        <th>session_key</th>
+        <th>expire_date</th>
+        <th>last_seen</th>
+        <th>User-Agent</th>
+        <th>IP</th>
+        <th>username</th>
+        <th>logout</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for r in rows %}
+        <tr>
+          <td>
+            <code>{{ r.session_key }}</code>
+            {% if r.session_key == current_key %}
+              <span class="badge">目前這台</span>
+            {% endif %}
+          </td>
+          <td>{{ r.expire_date }}</td>
+          <td>{{ r.last_seen|default:"" }}</td>
+          <td>{{ r.ua|default:"" }}</td>
+          <td>{{ r.ip|default:"" }}</td>
+          <td>{{ r.username|default:"" }}</td>
+          <td>
+            <form action="/sessions/logout/" method="post" style="display:inline;">
+            {% csrf_token %}
+            <input type="hidden" name="session_key" value="{{ r.session_key }}">
+            <button type="submit">登出此裝置</button>
+            </form>
+          </td>
+        </tr>
+      {% empty %}
+        <tr><td colspan="7">沒有任何 sessions</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</body>
+</html>

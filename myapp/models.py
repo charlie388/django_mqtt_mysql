@@ -1,4 +1,14 @@
 from django.db import models
+from django.contrib.auth.models import User
+
+# 一對一關聯：每個使用者對應一個 Device
+class Device(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    device = models.CharField(max_length=10, blank=True, null=True)
+
+    def __str__(self):
+        return f"{self.user.username} 的個人裝置資料"
+
 
 # Create your models here.
 class Upload(models.Model):

@@ -27,6 +27,8 @@ document.getElementById("myForm").addEventListener("submit", async (e) => {
     }
 });
 
+getUpload('/api/upload/');
+
 let idMark = null;
 setInterval(add, 5000);
   function add() {
@@ -47,9 +49,15 @@ setInterval(add, 5000);
         }
         return response.json(); // Parse the JSON data
       })
-      .then(data => {
-        //console.log(data); // Handle the data here
-        fillTable(data);
+      .then(result => {
+        console.log(result); // Handle the data here
+        if(result.status === "success") {
+          const data = result.data
+          console.log(data)
+          fillTable(data);
+        } else if(result.status === "Auth Fail") {
+          window.location.replace("/logout/");
+        }
 
       })
       .catch(error => {
