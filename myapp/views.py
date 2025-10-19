@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate
+from django.contrib.auth import authenticate, login, logout
 from django.contrib import auth
 from django.http import HttpResponse, JsonResponse
 import json
@@ -53,61 +53,6 @@ def logout(request):
         return HttpResponse('logout')
     else:
         return redirect("/login/")
-
-
-def upload_list(request):
-    if request.user.is_authenticated:
-        user = request.user
-        device = user.device.device
-        uploads =  Upload.objects.filter(device=device).order_by('-id')[:13]
-        data = list(uploads.values())
-        result = {}
-        result['status'] = "success"
-        result['data'] = data
-        return JsonResponse(result)
-    else:
-        return JsonResponse({'status': 'Auth Fail'})
-
-def upload_update(request, id):
-    if request.user.is_authenticated:
-        user = request.user
-        device = user.device.device
-        uploads = Upload.objects.filter(device=device, id__gt=id).order_by('-id')[:13]
-        data = list(uploads.values())
-        result = {}
-        result['status'] = "success"
-        result['data'] = data
-        return JsonResponse(result)
-    else:
-        return JsonResponse({'status': 'Auth Fail'})
-
-@csrf_exempt  # Only for development/testing; use CSRF tokens in production
-def publish_message(request):
-    if request.method == 'POST':
-        try:
-            data = json.loads(request.body)
-            print(f'"topic" : "{data['topic'].strip()}" , "msg" : "{data['msg']}" ')
-
-            # auth = {'username': settings.MQTT_USER, 'password': settings.MQTT_PASSWORD}
-            # publish.single(f'{data['topic']}', f'{data['msg']}', hostname=settings.MQTT_SERVER, client_id="web_server", auth=auth)
-            # return JsonResponse({'code': 0})
-
-            # rc, mid = client.publish(f'{data['topic']}', f'{data['msg']}')
-            # return JsonResponse({'code': rc})
-
-            if not client.is_connected():
-                print("client.reconnect()")
-                mqttErrorCode = client.reconnect()
-                if mqttErrorCode != 0:
-                    return JsonResponse({'client.reconnect() MQTTErrorCode': mqttErrorCode})
-            mqttMessageInfo = client.publish(f'{data['topic'].strip()}', f'{data['msg']}')
-            mqttMessageInfo.wait_for_publish()
-            return JsonResponse({'mqttMessageInfo.rc': mqttMessageInfo.rc})
-        
-        except Exception as e:
-            return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
-    else:
-        return JsonResponse({'status': 'only POST allowed'}, status=405)
     
 def sessions_list(request):
     if request.user.is_authenticated and request.user.is_superuser:
@@ -166,3 +111,117 @@ def sessions_logout(request):
     else:
         return redirect("/login/")
 
+def upload_list(request):
+    if request.user.is_authenticated:
+        user = request.user
+        device = user.device.device
+        uploads =  Upload.objects.filter(device=device).order_by('-id')[:13]
+        data = list(uploads.values())
+        result = {}
+        result['status'] = "success"
+        result['data'] = data
+        return JsonResponse(result)
+    else:
+        return JsonResponse({'status': 'Auth Fail'})
+
+def upload_update(request, id):
+    if request.user.is_authenticated:
+        user = request.user
+        device = user.device.device
+        uploads = Upload.objects.filter(device=device, id__gt=id).order_by('-id')[:13]
+        data = list(uploads.values())
+        result = {}
+        result['status'] = "success"
+        result['data'] = data
+        return JsonResponse(result)
+    else:
+        return JsonResponse({'status': 'Auth Fail'})
+
+@csrf_exempt  # Only for development/testing; use CSRF tokens in production
+def publish_message(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            print(f'"topic" : "{data['topic'].strip()}" , "msg" : "{data['msg']}" ')
+
+            # auth = {'username': settings.MQTT_USER, 'password': settings.MQTT_PASSWORD}
+            # publish.single(f'{data['topic']}', f'{data['msg']}', hostname=settings.MQTT_SERVER, client_id="web_server", auth=auth)
+            # return JsonResponse({'code': 0})
+
+            # rc, mid = client.publish(f'{data['topic']}', f'{data['msg']}')
+            # return JsonResponse({'code': rc})
+
+            if not client.is_connected():
+                print("client.reconnect()")
+                mqttErrorCode = client.reconnect()
+                if mqttErrorCode != 0:
+                    return JsonResponse({'client.reconnect() MQTTErrorCode': mqttErrorCode})
+            mqttMessageInfo = client.publish(f'{data['topic'].strip()}', f'{data['msg']}')
+            mqttMessageInfo.wait_for_publish()
+            return JsonResponse({'mqttMessageInfo.rc': mqttMessageInfo.rc})
+        
+        except Exception as e:
+            return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
+    else:
+        return JsonResponse({'status': 'only POST allowed'}, status=405)
+
+from django.views.decorators.http import require_GET, require_POST
+from django.views.decorators.csrf import csrf_protect
+from django.middleware.csrf import get_token
+
+@require_GET
+def api_csrf_token(request):
+    token = get_token(request)
+    return JsonResponse({"csrfToken": request.META.get("CSRF_COOKIE")})
+
+@require_POST
+@csrf_protect
+def api_login(request):
+    data = None
+    try:
+        data = json.loads(request.body.decode("utf-8") or "{}")
+    except json.JSONDecodeError:
+        return JsonResponse({"status": "Invalid JSON"}, status=400)
+
+    if data is None:
+        return JsonResponse({"status": "Invalid JSON"}, status=400)
+
+    username = data.get("username")
+    password = data.get("password")
+    if not username or not password:
+        return JsonResponse({"status": "username and password are required"}, status=400)
+
+    user = authenticate(request, username=username, password=password)
+    if user is None:
+        return JsonResponse({"status": "Invalid credentials"}, status=401)
+
+    auth.login(request, user)  # creates the session
+    return JsonResponse({"status": "success"})  
+
+@require_POST
+@csrf_protect
+def api_logout(request):
+    if not request.user.is_authenticated:
+        return JsonResponse({'status': 'Auth Fail'}, status=401)
+    logout(request)
+    return JsonResponse({"status": "success"})
+
+@require_GET
+def api_deviceInfo(request):
+    if not request.user.is_authenticated:
+        return JsonResponse({'status': 'Auth Fail'}, status=401)
+    u = request.user
+    return JsonResponse({
+        "status": "success",
+        "device_info": {
+            "name": f"{u.device.device}",
+            "broker_info": {
+                "user": "admin",
+                "password": "1234",
+                "host": "mqtt.charlie388.win",
+                "port": "443",
+                "protocol": "websocket",
+                "ssl" : "true"
+            }
+        }
+    })

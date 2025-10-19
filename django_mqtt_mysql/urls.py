@@ -23,9 +23,16 @@ urlpatterns = [
     path("", views.index),
     path('login/', views.login),
     path('logout/', views.logout),
+
+    path("sessions/", views.sessions_list),
+    path("sessions/logout/",views.sessions_logout),
+
     path("api/upload/", views.upload_list),
     path("api/upload/<int:id>", views.upload_update),
     path('api/publish/', views.publish_message),
-    path("sessions/", views.sessions_list),
-    path("sessions/logout/",views.sessions_logout),
+
+    path("api/csrf/", views.api_csrf_token),
+    path("api/login/", views.api_login),
+    path("api/logout/", views.api_logout),
+    path("api/device_info/", views.api_deviceInfo),
 ]
