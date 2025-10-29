@@ -30,14 +30,19 @@ document.getElementById("myForm").addEventListener("submit", async (e) => {
 getUpload('/api/upload/');
 
 let idMark = null;
-setInterval(add, 5000);
+let countdown = 5;
+setInterval(add, 1000);
   function add() {
-    if(idMark == null) { // fresh get
-      getUpload('/api/upload/');	
-    } else {
-      getUpload('/api/upload/'+idMark);	
+    if(countdown ==0) {
+      if(idMark == null) { // fresh get
+        getUpload('/api/upload/');	
+      } else {
+        getUpload('/api/upload/'+idMark);	
+      }
+      countdown = 5;
     }
-    
+    document.getElementById("myCountDown").textContent = `${countdown}秒後更新`;
+    countdown--;
   }
   
   function getUpload(URL)

@@ -18,7 +18,10 @@ body {
   white-space: normal;
   word-break: break-word;
 }
-
+#myTable td:nth-child(4) {
+  white-space: normal;
+  word-break: keep-all;
+}
 
 code {
   word-break: break-all;
