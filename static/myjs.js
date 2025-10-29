@@ -73,8 +73,10 @@ setInterval(add, 1000);
 let toggleColor = 0;
   function fillTable(data) {
     var table = document.getElementById("myTable").getElementsByTagName('tbody')[0];
+
     for(let i=(data.length-1); i>=0; i--) {
       var newRow = table.insertRow(0);
+      table.deleteRow(table.rows.length-1)
 
       toggleColor = toggleColor % 6;
       if(toggleColor == 0) {
@@ -110,11 +112,4 @@ let toggleColor = 0;
 
       idMark = data[i].id;
     }
-    
-      if(table.rows.length > 13) {
-          let i;
-          for(i=table.rows.length - 1 ; i>=13; i--) {
-            table.deleteRow(i);
-          }
-      }
   }
