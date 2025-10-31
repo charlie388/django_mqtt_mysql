@@ -1,13 +1,13 @@
-curl -i -c cookies.txt http://192.168.2.104:8080/api/csrf/
+curl -i -c cookies.txt https://www.charlie388.win/api/csrf/
 
 CSRF=$(grep csrftoken cookies.txt | tail -n1 | awk '{print $7}') && echo $CSRF
 
-curl -i -b cookies.txt -c cookies.txt -H "Content-Type: application/json" -H "X-CSRFToken: $CSRF" -X POST -d '{"username":"charlie","password":"a123456!"}'  http://192.168.2.104:8080/api/login/
+curl -i -b cookies.txt -c cookies.txt -H "Content-Type: application/json" -H "X-CSRFToken: $CSRF" -X POST -d '{"username":"charlie","password":"a123456!"}'  https://www.charlie388.win/api/login/
 
 CSRF=$(grep csrftoken cookies.txt | tail -n1 | awk '{print $7}') && echo $CSRF
 
-curl -i -b cookies.txt http://192.168.2.104:8080/api/me/
-curl -i -b cookies.txt http://192.168.2.104:8080/api/upload/
+curl -i -b cookies.txt https://www.charlie388.win/api/device_info/
+curl -i -b cookies.txt https://www.charlie388.win/api/upload/
 
-curl -i -b cookies.txt -c cookies.txt -H "X-CSRFToken: $CSRF" -H "Referer: http://192.168.2.104:8080" -X POST http://192.168.2.104:8080/api/logout/
+curl -i -b cookies.txt -c cookies.txt -H "X-CSRFToken: $CSRF" -H "Referer: https://www.charlie388.win" -X POST https://www.charlie388.win/api/logout/
 

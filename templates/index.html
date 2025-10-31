@@ -107,7 +107,7 @@
                 name="topic"
                 id="topic"
                 class="form-control"
-                value="{% if device %}{{ device }}/cmd{% else %}{% endif %}"
+                value="{% if device %}{{ device }}/cmd{% endif %}"
               />
             </div>
             <div class="col-12 col-md-6">
@@ -135,7 +135,9 @@
         </div>
         <div class="card-body">
           <h3 class="h5 mb-3">
-            MQTT publish topic: <code>0/upload</code>, msg: <code>{"temp": 50.1}</code>
+            {% if device %}
+            範例 : MQTT publish topic: <code>{{ device }}/upload</code>, msg: <code>{"temp": 50.1}</code>
+            {% endif %}
           </h3>
           <ul class="mb-4">
             <li>只要 <code>temp &gt; 50.0</code> 就會發 LINE 訊息通知。</li>
