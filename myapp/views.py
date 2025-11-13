@@ -213,15 +213,13 @@ def api_deviceInfo(request):
     u = request.user
     return JsonResponse({
         "status": "success",
-        "device_info": {
-            "name": f"{u.device.device}",
-            "broker_info": {
-                "user": "admin",
-                "password": "1234",
-                "host": "mqtt.charlie388.win",
-                "port": "443",
-                "protocol": "websocket",
-                "ssl" : "true"
-            }
+        "device": f"{u.device.device}",
+        "broker_info": {
+            "user": "admin",
+            "password": "1234",
+            "host": "mqtt.charlie388.win",
+            "port": "443",
+            "is_ssl" : "true",
+            "is_ws": "true",
         }
     })

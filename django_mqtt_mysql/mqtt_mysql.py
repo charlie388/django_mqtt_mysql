@@ -45,8 +45,8 @@ def on_message(mqtt_client, userdata, msg):
     if 'temp' in upload_obj:
         global temp 
         temp = upload_obj['temp']
-        if(temp > 50.0 and msg.topic == '0/upload') :
-            msg = f'溫度超標 {temp}'
+        if(temp > 50.0) :
+            msg = f'裝置:{device}，溫度超標:{temp}'
             print(msg)
             data['messages'][0]['text'] = msg
             res = requests.post(url, headers = headers, data = json.dumps(data))
