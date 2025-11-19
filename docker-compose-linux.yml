@@ -1,0 +1,51 @@
+name: django_mqtt_mysql
+
+services:
+  mqtt-broker:
+    image: eclipse-mosquitto
+    container_name: mosquitto
+    user: 1883:1883
+    restart: always
+    stdin_open: true
+    tty: true
+    ports:
+      - 1883:1883
+      - 9001:9001
+    volumes:
+      - $PWD/mosquitto/data:/mosquitto/data:rw
+      - $PWD/mosquitto/log:/mosquitto/log:rw
+      - $PWD/mosquitto/config:/mosquitto/config:rw
+    # healthcheck:
+    #   test: ["CMD", "sh", "-c", "mosquitto_sub -h localhost -p 1883 -u admin -P 1234 -t '$$SYS/broker/version' -C 1 -q 0"]
+    #   interval: 10s
+    #   timeout: 5s
+    #   retries: 3
+    #   start_period: 20s
+
+  web:
+    build:
+      context: $PWD
+    image: django-app
+    container_name: django-app
+    restart: always
+    stdin_open: true
+    tty: true
+    ports:
+      - 80:80
+#Docker Engine is not automatically configured "host.docker.internal" by default on linux.
+    extra_hosts:
+      - "host.docker.internal:172.17.0.1" # Replace with your host's actual IP if different
+    # depends_on:
+    #   mqtt-broker:
+    #     condition: service_healthy
+
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    container_name: cloudflared_tunnel
+    restart: unless-stopped
+    volumes:
+      - ./cloudflared:/etc/cloudflared
+#Please replace token xxxxx
+# Go to https://dash.cloudflare.com/login
+# Go to ZeroTrust -> Network -> Tunnels
+    command: tunnel --no-autoupdate run --token eyJhIjoiYzcxYmM5NGRmZjVkNDUxZTUxNjU2N2I4NWJjNjVkOTgiLCJ0IjoiNzI4ZDA2NGQtZWVkMy00NTg1LWIwYzEtN2IyOGQwOWU3NmE1IiwicyI6Ik1UTXdNekJoWkRndE1HTTFOQzAwT0RCaExXRmxOek10TmpoaU9EQm1ZV0ZoT0RNNCJ9
