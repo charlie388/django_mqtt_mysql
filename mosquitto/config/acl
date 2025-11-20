@@ -1,0 +1,5 @@
+
+user admin
+topic readwrite +/upload
+topic readwrite +/cmd
+topic readwrite +/rsp
